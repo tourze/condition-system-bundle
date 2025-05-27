@@ -2,6 +2,7 @@
 
 namespace Tourze\ConditionSystemBundle\Interface;
 
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Tourze\ConditionSystemBundle\ValueObject\EvaluationContext;
 use Tourze\ConditionSystemBundle\ValueObject\EvaluationResult;
 use Tourze\ConditionSystemBundle\ValueObject\ValidationResult;
@@ -9,6 +10,7 @@ use Tourze\ConditionSystemBundle\ValueObject\ValidationResult;
 /**
  * 通用条件处理器接口
  */
+#[AutoconfigureTag('condition_system.handler')]
 interface ConditionHandlerInterface
 {
     /**

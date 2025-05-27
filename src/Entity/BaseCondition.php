@@ -2,41 +2,47 @@
 
 namespace Tourze\ConditionSystemBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Tourze\ConditionSystemBundle\Enum\ConditionTrigger;
 use Tourze\ConditionSystemBundle\Interface\ConditionInterface;
 use Tourze\ConditionSystemBundle\Interface\SubjectInterface;
+use Tourze\ConditionSystemBundle\Repository\BaseConditionRepository;
+use Tourze\DoctrineTimestampBundle\Attribute\CreateTimeColumn;
+use Tourze\DoctrineTimestampBundle\Attribute\UpdateTimeColumn;
 
 /**
  * 基础条件实体
  */
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: BaseConditionRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'condition_type', type: 'string')]
-#[ORM\Table(name: 'condition_base')]
-abstract class BaseCondition implements ConditionInterface
+#[ORM\Table(name: 'condition_base', options: ['comment' => '条件基础表'])]
+abstract class BaseCondition implements ConditionInterface, \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 50)]
+    #[ORM\Column(type: Types::STRING, length: 50, options: ['comment' => '条件类型'])]
     private string $type;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(type: Types::STRING, length: 100, options: ['comment' => '条件标签'])]
     private string $label;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true, options: ['comment' => '备注'])]
     private ?string $remark = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true, 'comment' => '是否启用'])]
     private bool $enabled = true;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[CreateTimeColumn]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '创建时间'])]
     private ?\DateTimeInterface $createTime = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[UpdateTimeColumn]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '更新时间'])]
     private ?\DateTimeInterface $updateTime = null;
 
     /**
@@ -123,5 +129,10 @@ abstract class BaseCondition implements ConditionInterface
     {
         $this->updateTime = $updateTime;
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->label ?: $this->type;
     }
 }
