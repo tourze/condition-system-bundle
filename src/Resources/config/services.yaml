@@ -1,0 +1,20 @@
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  Tourze\ConditionSystemBundle\Service\:
+    resource: '../../Service/'
+
+  # 条件处理器工厂
+  Tourze\ConditionSystemBundle\Service\ConditionHandlerFactory:
+    arguments:
+      $handlers: !tagged_iterator condition_system.handler
+
+  # 条件管理服务
+  Tourze\ConditionSystemBundle\Service\ConditionManagerService:
+    arguments:
+      $handlerFactory: '@Tourze\ConditionSystemBundle\Service\ConditionHandlerFactory'
+      $entityManager: '@doctrine.orm.entity_manager'
+      $logger: '@logger'
