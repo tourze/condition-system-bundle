@@ -105,7 +105,7 @@ class ConditionManagerService
             ]);
             
             return $result;
-        } catch (\Throwable $e) {
+        } catch  (\Throwable $e) {
             $this->logger->error('条件评估失败', [
                 'condition_id' => $condition->getId(),
                 'type' => $condition->getType(),
