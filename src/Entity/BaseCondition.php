@@ -10,6 +10,7 @@ use Tourze\ConditionSystemBundle\Interface\SubjectInterface;
 use Tourze\ConditionSystemBundle\Repository\BaseConditionRepository;
 use Tourze\DoctrineTimestampBundle\Attribute\CreateTimeColumn;
 use Tourze\DoctrineTimestampBundle\Attribute\UpdateTimeColumn;
+use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
 
 /**
  * 基础条件实体
@@ -20,6 +21,7 @@ use Tourze\DoctrineTimestampBundle\Attribute\UpdateTimeColumn;
 #[ORM\Table(name: 'condition_base', options: ['comment' => '条件基础表'])]
 abstract class BaseCondition implements ConditionInterface, \Stringable
 {
+    use TimestampableAware;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -38,14 +40,8 @@ abstract class BaseCondition implements ConditionInterface, \Stringable
     private bool $enabled = true;
 
     #[CreateTimeColumn]
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '创建时间'])]
-    private ?\DateTimeInterface $createTime = null;
-
-    #[UpdateTimeColumn]
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '更新时间'])]
-    private ?\DateTimeInterface $updateTime = null;
-
-    /**
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '创建时间'])]#[UpdateTimeColumn]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '更新时间'])]/**
      * 获取触发器类型 - 由子类实现
      */
     abstract public function getTrigger(): ConditionTrigger;
@@ -107,31 +103,7 @@ abstract class BaseCondition implements ConditionInterface, \Stringable
     {
         $this->enabled = $enabled;
         return $this;
-    }
-
-    public function getCreateTime(): ?\DateTimeInterface
-    {
-        return $this->createTime;
-    }
-
-    public function setCreateTime(?\DateTimeInterface $createTime): self
-    {
-        $this->createTime = $createTime;
-        return $this;
-    }
-
-    public function getUpdateTime(): ?\DateTimeInterface
-    {
-        return $this->updateTime;
-    }
-
-    public function setUpdateTime(?\DateTimeInterface $updateTime): self
-    {
-        $this->updateTime = $updateTime;
-        return $this;
-    }
-
-    public function __toString(): string
+    }public function __toString(): string
     {
         return $this->label ?: $this->type;
     }
