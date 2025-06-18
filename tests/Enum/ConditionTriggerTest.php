@@ -73,7 +73,6 @@ class ConditionTriggerTest extends TestCase
 
         // 这些方法可能由 trait 提供，但我们不强制要求它们存在
         // 因为具体实现可能不同
-        $this->assertIsArray($methods);
         $this->assertContains('getLabel', $methods);
     }
 

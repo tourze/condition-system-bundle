@@ -169,8 +169,6 @@ class AbstractConditionHandlerTest extends TestCase
     public function test_get_display_text_returns_string(): void
     {
         $displayText = $this->handler->getDisplayText($this->mockCondition);
-        
-        $this->assertIsString($displayText);
         $this->assertEquals('Test condition', $displayText);
     }
 
