@@ -8,8 +8,6 @@ use Tourze\ConditionSystemBundle\Enum\ConditionTrigger;
 use Tourze\ConditionSystemBundle\Interface\ConditionInterface;
 use Tourze\ConditionSystemBundle\Interface\SubjectInterface;
 use Tourze\ConditionSystemBundle\Repository\BaseConditionRepository;
-use Tourze\DoctrineTimestampBundle\Attribute\CreateTimeColumn;
-use Tourze\DoctrineTimestampBundle\Attribute\UpdateTimeColumn;
 use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
 
 /**
@@ -39,9 +37,7 @@ abstract class BaseCondition implements ConditionInterface, \Stringable
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true, 'comment' => '是否启用'])]
     private bool $enabled = true;
 
-    #[CreateTimeColumn]
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '创建时间'])]#[UpdateTimeColumn]
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '更新时间'])]/**
+    /**
      * 获取触发器类型 - 由子类实现
      */
     abstract public function getTrigger(): ConditionTrigger;
