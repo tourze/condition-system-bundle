@@ -100,7 +100,7 @@ class BaseConditionTest extends TestCase
 
     public function test_create_time_can_be_set_and_retrieved(): void
     {
-        $createTime = new \DateTime('2023-01-01 10:00:00');
+        $createTime = new \DateTimeImmutable('2023-01-01 10:00:00');
         $result = $this->condition->setCreateTime($createTime);
         
         $this->assertSame($this->condition, $result);
@@ -109,7 +109,7 @@ class BaseConditionTest extends TestCase
 
     public function test_create_time_can_be_null(): void
     {
-        $this->condition->setCreateTime(new \DateTime());
+        $this->condition->setCreateTime(new \DateTimeImmutable());
         $result = $this->condition->setCreateTime(null);
         
         $this->assertSame($this->condition, $result);
@@ -118,7 +118,7 @@ class BaseConditionTest extends TestCase
 
     public function test_update_time_can_be_set_and_retrieved(): void
     {
-        $updateTime = new \DateTime('2023-01-02 15:30:00');
+        $updateTime = new \DateTimeImmutable('2023-01-02 15:30:00');
         $result = $this->condition->setUpdateTime($updateTime);
         
         $this->assertSame($this->condition, $result);
@@ -127,7 +127,7 @@ class BaseConditionTest extends TestCase
 
     public function test_update_time_can_be_null(): void
     {
-        $this->condition->setUpdateTime(new \DateTime());
+        $this->condition->setUpdateTime(new \DateTimeImmutable());
         $result = $this->condition->setUpdateTime(null);
         
         $this->assertSame($this->condition, $result);
@@ -171,8 +171,8 @@ class BaseConditionTest extends TestCase
 
     public function test_fluent_interface_chaining(): void
     {
-        $createTime = new \DateTime();
-        $updateTime = new \DateTime();
+        $createTime = new \DateTimeImmutable();
+        $updateTime = new \DateTimeImmutable();
         
         $result = $this->condition
             ->setType('chained_type')

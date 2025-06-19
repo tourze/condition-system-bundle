@@ -22,7 +22,7 @@ abstract class BaseCondition implements ConditionInterface, \Stringable
     use TimestampableAware;
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(options: ['comment' => '主键ID'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 50, options: ['comment' => '条件类型'])]
