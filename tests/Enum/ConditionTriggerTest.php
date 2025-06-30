@@ -78,17 +78,33 @@ class ConditionTriggerTest extends TestCase
 
     public function test_enum_can_be_used_in_match_expression(): void
     {
-        $trigger = ConditionTrigger::BEFORE_ACTION;
+        $triggers = [
+            ConditionTrigger::BEFORE_ACTION,
+            ConditionTrigger::AFTER_ACTION,
+            ConditionTrigger::DURING_ACTION,
+            ConditionTrigger::VALIDATION,
+            ConditionTrigger::FILTER,
+        ];
 
-        $result = match ($trigger) {
-            ConditionTrigger::BEFORE_ACTION => 'before',
-            ConditionTrigger::AFTER_ACTION => 'after',
-            ConditionTrigger::DURING_ACTION => 'during',
-            ConditionTrigger::VALIDATION => 'validation',
-            ConditionTrigger::FILTER => 'filter',
-        };
+        foreach ($triggers as $trigger) {
+            $result = match ($trigger) {
+                ConditionTrigger::BEFORE_ACTION => 'before',
+                ConditionTrigger::AFTER_ACTION => 'after',
+                ConditionTrigger::DURING_ACTION => 'during',
+                ConditionTrigger::VALIDATION => 'validation',
+                ConditionTrigger::FILTER => 'filter',
+            };
 
-        $this->assertEquals('before', $result);
+            $expected = match ($trigger) {
+                ConditionTrigger::BEFORE_ACTION => 'before',
+                ConditionTrigger::AFTER_ACTION => 'after',
+                ConditionTrigger::DURING_ACTION => 'during',
+                ConditionTrigger::VALIDATION => 'validation',
+                ConditionTrigger::FILTER => 'filter',
+            };
+
+            $this->assertEquals($expected, $result);
+        }
     }
 
     public function test_enum_can_be_serialized(): void
@@ -110,8 +126,6 @@ class ConditionTriggerTest extends TestCase
 
         $this->assertSame($trigger1, $trigger2);
         $this->assertNotSame($trigger1, $trigger3);
-        $this->assertTrue($trigger1 === $trigger2);
-        $this->assertFalse($trigger1 === $trigger3);
     }
 
     public function test_from_value_creation(): void

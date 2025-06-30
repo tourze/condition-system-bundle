@@ -14,7 +14,7 @@ use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
  * 基础条件实体
  */
 #[ORM\Entity(repositoryClass: BaseConditionRepository::class)]
-#[ORM\InheritanceType('JOINED')]
+#[ORM\InheritanceType(value: 'JOINED')]
 #[ORM\DiscriminatorColumn(name: 'condition_type', type: 'string')]
 #[ORM\Table(name: 'condition_base', options: ['comment' => '条件基础表'])]
 abstract class BaseCondition implements ConditionInterface, \Stringable
@@ -99,8 +99,10 @@ abstract class BaseCondition implements ConditionInterface, \Stringable
     {
         $this->enabled = $enabled;
         return $this;
-    }public function __toString(): string
+    }
+
+    public function __toString(): string
     {
-        return $this->label ?: $this->type;
+        return $this->label ?? $this->type;
     }
 }

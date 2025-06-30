@@ -10,7 +10,7 @@ use Tourze\ConditionSystemBundle\ValueObject\ValidationResult;
 /**
  * 通用条件处理器接口
  */
-#[AutoconfigureTag('condition_system.handler')]
+#[AutoconfigureTag(name: 'condition_system.handler')]
 interface ConditionHandlerInterface
 {
     /**

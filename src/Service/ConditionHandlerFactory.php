@@ -13,7 +13,7 @@ class ConditionHandlerFactory
 {
     private array $handlers = [];
 
-    public function __construct(#[TaggedIterator('condition_system.handler')] iterable $handlers)
+    public function __construct(#[TaggedIterator(tag: 'condition_system.handler')] iterable $handlers)
     {
         foreach ($handlers as $handler) {
             if ($handler instanceof ConditionHandlerInterface) {

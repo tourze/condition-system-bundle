@@ -4,7 +4,7 @@ namespace Tourze\ConditionSystemBundle\Interface;
 
 /**
  * 条件主体接口
- * 
+ *
  * 代表条件所作用的对象，如优惠券、活动、权限等
  */
 interface SubjectInterface

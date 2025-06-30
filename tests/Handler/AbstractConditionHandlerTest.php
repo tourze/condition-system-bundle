@@ -4,6 +4,7 @@ namespace Tourze\ConditionSystemBundle\Tests\Handler;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Tourze\ConditionSystemBundle\Exception\NotImplementedException;
 use Tourze\ConditionSystemBundle\Handler\AbstractConditionHandler;
 use Tourze\ConditionSystemBundle\Interface\ActorInterface;
 use Tourze\ConditionSystemBundle\Interface\ConditionInterface;
@@ -47,7 +48,7 @@ class AbstractConditionHandlerTest extends TestCase
 
             public function createCondition(\Tourze\ConditionSystemBundle\Interface\SubjectInterface $subject, array $config): ConditionInterface
             {
-                throw new \RuntimeException('Not implemented in test');
+                throw new NotImplementedException('Not implemented in test');
             }
 
             public function updateCondition(ConditionInterface $condition, array $config): void
@@ -62,7 +63,7 @@ class AbstractConditionHandlerTest extends TestCase
 
             public function getSupportedTriggers(): array
             {
-                return [];
+                return [\Tourze\ConditionSystemBundle\Enum\ConditionTrigger::BEFORE_ACTION];
             }
 
             protected function doEvaluate(ConditionInterface $condition, EvaluationContext $context): EvaluationResult
@@ -117,7 +118,7 @@ class AbstractConditionHandlerTest extends TestCase
             public function getDescription(): string { return 'Test'; }
             public function getFormFields(): iterable { return []; }
             public function validateConfig(array $config): \Tourze\ConditionSystemBundle\ValueObject\ValidationResult { return \Tourze\ConditionSystemBundle\ValueObject\ValidationResult::success(); }
-            public function createCondition(\Tourze\ConditionSystemBundle\Interface\SubjectInterface $subject, array $config): ConditionInterface { throw new \RuntimeException('Not implemented'); }
+            public function createCondition(\Tourze\ConditionSystemBundle\Interface\SubjectInterface $subject, array $config): ConditionInterface { throw new NotImplementedException('Not implemented'); }
             public function updateCondition(ConditionInterface $condition, array $config): void {}
             public function getDisplayText(ConditionInterface $condition): string { return 'Test'; }
             public function getSupportedTriggers(): array { return []; }
@@ -151,8 +152,8 @@ class AbstractConditionHandlerTest extends TestCase
         $this->assertEquals('test_handler', $this->handler->getType());
         $this->assertEquals('测试处理器', $this->handler->getLabel());
         $this->assertEquals('用于测试的处理器', $this->handler->getDescription());
-        $this->assertIsIterable($this->handler->getFormFields());
-        $this->assertIsArray($this->handler->getSupportedTriggers());
+        $this->assertCount(0, iterator_to_array($this->handler->getFormFields()));
+        $this->assertCount(1, $this->handler->getSupportedTriggers());
     }
 
     public function test_validate_config_returns_validation_result(): void

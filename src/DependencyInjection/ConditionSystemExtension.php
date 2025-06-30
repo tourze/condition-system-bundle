@@ -16,5 +16,8 @@ class ConditionSystemExtension extends Extension
             new FileLocator(__DIR__ . '/../Resources/config')
         );
         $loader->load('services.yaml');
+        
+        // 设置参数
+        $container->setParameter('condition_system.handler_tag', 'condition_system.handler');
     }
 }

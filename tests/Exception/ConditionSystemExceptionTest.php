@@ -70,8 +70,8 @@ class ConditionSystemExceptionTest extends TestCase
     {
         $exception = new ConditionSystemException('测试');
         
-        $this->assertIsArray($exception->getTrace());
-        $this->assertIsString($exception->getTraceAsString());
+        $this->assertNotEmpty($exception->getTrace());
+        $this->assertNotEmpty($exception->getTraceAsString());
         $this->assertStringContainsString(__CLASS__, $exception->getTraceAsString());
     }
 } 

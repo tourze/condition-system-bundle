@@ -138,7 +138,7 @@ class BaseConditionTest extends TestCase
     {
         // 测试抽象方法的实现
         $this->assertEquals(ConditionTrigger::BEFORE_ACTION, $this->condition->getTrigger());
-        $this->assertIsArray($this->condition->toArray());
+        $this->assertCount(4, $this->condition->toArray());
         $this->assertNull($this->condition->getSubject());
     }
 
