@@ -21,6 +21,8 @@ interface SubjectInterface
 
     /**
      * 获取主体数据
+     *
+     * @return array<string, mixed>
      */
     public function getSubjectData(): array;
-} 
+}

@@ -4,11 +4,17 @@ namespace Tourze\ConditionSystemBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Tourze\ConditionSystemBundle\Entity\BaseCondition;
+use Tourze\PHPUnitSymfonyKernelTest\Attribute\AsRepository;
 
 /**
  * 基础条件仓储类
+ *
+ * @extends ServiceEntityRepository<BaseCondition>
  */
+#[Autoconfigure(public: true)]
+#[AsRepository(entityClass: BaseCondition::class)]
 class BaseConditionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -18,6 +24,8 @@ class BaseConditionRepository extends ServiceEntityRepository
 
     /**
      * 根据类型查找条件
+     *
+     * @return BaseCondition[]
      */
     public function findByType(string $type): array
     {
@@ -25,11 +33,14 @@ class BaseConditionRepository extends ServiceEntityRepository
             ->andWhere('c.type = :type')
             ->setParameter('type', $type)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     /**
      * 查找启用的条件
+     *
+     * @return BaseCondition[]
      */
     public function findEnabled(): array
     {
@@ -37,11 +48,14 @@ class BaseConditionRepository extends ServiceEntityRepository
             ->andWhere('c.enabled = :enabled')
             ->setParameter('enabled', true)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     /**
      * 根据类型查找启用的条件
+     *
+     * @return BaseCondition[]
      */
     public function findEnabledByType(string $type): array
     {
@@ -51,6 +65,31 @@ class BaseConditionRepository extends ServiceEntityRepository
             ->setParameter('type', $type)
             ->setParameter('enabled', true)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
-} 
+
+    /**
+     * 保存实体
+     */
+    public function save(BaseCondition $entity, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * 删除实体
+     */
+    public function remove(BaseCondition $entity, bool $flush = true): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+}

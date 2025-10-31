@@ -3,8 +3,10 @@
 namespace Tourze\ConditionSystemBundle\Interface;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Tourze\ConditionSystemBundle\Enum\ConditionTrigger;
 use Tourze\ConditionSystemBundle\ValueObject\EvaluationContext;
 use Tourze\ConditionSystemBundle\ValueObject\EvaluationResult;
+use Tourze\ConditionSystemBundle\ValueObject\FormField;
 use Tourze\ConditionSystemBundle\ValueObject\ValidationResult;
 
 /**
@@ -31,22 +33,28 @@ interface ConditionHandlerInterface
     /**
      * 获取表单字段配置
      *
-     * @return iterable<\Tourze\ConditionSystemBundle\ValueObject\FormField>
+     * @return iterable<FormField>
      */
     public function getFormFields(): iterable;
 
     /**
      * 验证条件配置的有效性
+     *
+     * @param array<string, mixed> $config
      */
     public function validateConfig(array $config): ValidationResult;
 
     /**
      * 创建条件实体
+     *
+     * @param array<string, mixed> $config
      */
     public function createCondition(SubjectInterface $subject, array $config): ConditionInterface;
 
     /**
      * 更新条件实体
+     *
+     * @param array<string, mixed> $config
      */
     public function updateCondition(ConditionInterface $condition, array $config): void;
 
@@ -62,6 +70,8 @@ interface ConditionHandlerInterface
 
     /**
      * 获取支持的触发器类型
+     *
+     * @return array<int, ConditionTrigger>
      */
     public function getSupportedTriggers(): array;
-} 
+}

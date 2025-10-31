@@ -2,12 +2,22 @@
 
 namespace Tourze\ConditionSystemBundle\Tests\Enum;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Tourze\ConditionSystemBundle\Enum\ConditionTrigger;
+use Tourze\EnumExtra\Itemable;
+use Tourze\EnumExtra\ItemTrait;
+use Tourze\EnumExtra\Labelable;
+use Tourze\EnumExtra\Selectable;
+use Tourze\EnumExtra\SelectTrait;
+use Tourze\PHPUnitEnum\AbstractEnumTestCase;
 
-class ConditionTriggerTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(ConditionTrigger::class)]
+final class ConditionTriggerTest extends AbstractEnumTestCase
 {
-    public function test_enum_values_are_correct(): void
+    public function testEnumValuesAreCorrect(): void
     {
         $this->assertEquals('before_action', ConditionTrigger::BEFORE_ACTION->value);
         $this->assertEquals('after_action', ConditionTrigger::AFTER_ACTION->value);
@@ -16,7 +26,7 @@ class ConditionTriggerTest extends TestCase
         $this->assertEquals('filter', ConditionTrigger::FILTER->value);
     }
 
-    public function test_enum_labels_are_correct(): void
+    public function testEnumLabelsAreCorrect(): void
     {
         $this->assertEquals('前置条件', ConditionTrigger::BEFORE_ACTION->getLabel());
         $this->assertEquals('后置条件', ConditionTrigger::AFTER_ACTION->getLabel());
@@ -25,48 +35,48 @@ class ConditionTriggerTest extends TestCase
         $this->assertEquals('过滤条件', ConditionTrigger::FILTER->getLabel());
     }
 
-    public function test_all_enum_cases_exist(): void
+    public function testAllEnumCasesExist(): void
     {
         $expectedCases = [
             'BEFORE_ACTION',
             'AFTER_ACTION',
             'DURING_ACTION',
             'VALIDATION',
-            'FILTER'
+            'FILTER',
         ];
 
-        $actualCases = array_map(fn($case) => $case->name, ConditionTrigger::cases());
+        $actualCases = array_map(fn ($case) => $case->name, ConditionTrigger::cases());
 
         $this->assertEquals($expectedCases, $actualCases);
         $this->assertCount(5, ConditionTrigger::cases());
     }
 
-    public function test_enum_implements_labelable_interface(): void
+    public function testEnumImplementsLabelableInterface(): void
     {
-        $this->assertInstanceOf(\Tourze\EnumExtra\Labelable::class, ConditionTrigger::BEFORE_ACTION);
+        $this->assertInstanceOf(Labelable::class, ConditionTrigger::BEFORE_ACTION);
     }
 
-    public function test_enum_implements_itemable_interface(): void
+    public function testEnumImplementsItemableInterface(): void
     {
-        $this->assertInstanceOf(\Tourze\EnumExtra\Itemable::class, ConditionTrigger::BEFORE_ACTION);
+        $this->assertInstanceOf(Itemable::class, ConditionTrigger::BEFORE_ACTION);
     }
 
-    public function test_enum_implements_selectable_interface(): void
+    public function testEnumImplementsSelectableInterface(): void
     {
-        $this->assertInstanceOf(\Tourze\EnumExtra\Selectable::class, ConditionTrigger::BEFORE_ACTION);
+        $this->assertInstanceOf(Selectable::class, ConditionTrigger::BEFORE_ACTION);
     }
 
-    public function test_trait_usage(): void
+    public function testTraitUsage(): void
     {
         // 测试枚举使用了正确的 trait
         $reflection = new \ReflectionClass(ConditionTrigger::class);
         $traitNames = $reflection->getTraitNames();
 
-        $this->assertContains(\Tourze\EnumExtra\ItemTrait::class, $traitNames);
-        $this->assertContains(\Tourze\EnumExtra\SelectTrait::class, $traitNames);
+        $this->assertContains(ItemTrait::class, $traitNames);
+        $this->assertContains(SelectTrait::class, $traitNames);
     }
 
-    public function test_trait_methods_exist(): void
+    public function testTraitMethodsExist(): void
     {
         // 验证 trait 方法是否存在（如果 trait 实现了这些方法）
         $methods = get_class_methods(ConditionTrigger::class);
@@ -76,7 +86,7 @@ class ConditionTriggerTest extends TestCase
         $this->assertContains('getLabel', $methods);
     }
 
-    public function test_enum_can_be_used_in_match_expression(): void
+    public function testEnumCanBeUsedInMatchExpression(): void
     {
         $triggers = [
             ConditionTrigger::BEFORE_ACTION,
@@ -107,7 +117,7 @@ class ConditionTriggerTest extends TestCase
         }
     }
 
-    public function test_enum_can_be_serialized(): void
+    public function testEnumCanBeSerialized(): void
     {
         $trigger = ConditionTrigger::VALIDATION;
         $serialized = serialize($trigger);
@@ -118,17 +128,23 @@ class ConditionTriggerTest extends TestCase
         $this->assertEquals('验证条件', $unserialized->getLabel());
     }
 
-    public function test_enum_comparison(): void
+    public function testEnumComparison(): void
     {
         $trigger1 = ConditionTrigger::BEFORE_ACTION;
         $trigger2 = ConditionTrigger::BEFORE_ACTION;
-        $trigger3 = ConditionTrigger::AFTER_ACTION;
 
         $this->assertSame($trigger1, $trigger2);
-        $this->assertNotSame($trigger1, $trigger3);
+
+        // 测试不同枚举值的比较 - 直接验证枚举值的唯一性
+        $triggers = ConditionTrigger::cases();
+        $this->assertCount(5, $triggers);
+
+        // 验证每个枚举值都有唯一的 value
+        $values = array_map(fn ($trigger) => $trigger->value, $triggers);
+        $this->assertCount(5, array_unique($values));
     }
 
-    public function test_from_value_creation(): void
+    public function testFromValueCreation(): void
     {
         $trigger = ConditionTrigger::from('before_action');
         $this->assertSame(ConditionTrigger::BEFORE_ACTION, $trigger);
@@ -137,12 +153,30 @@ class ConditionTriggerTest extends TestCase
         $this->assertSame(ConditionTrigger::VALIDATION, $trigger);
     }
 
-    public function test_try_from_value_creation(): void
+    public function testTryFromValueCreation(): void
     {
         $trigger = ConditionTrigger::tryFrom('before_action');
         $this->assertSame(ConditionTrigger::BEFORE_ACTION, $trigger);
 
         $trigger = ConditionTrigger::tryFrom('invalid_value');
         $this->assertNull($trigger);
+    }
+
+    public function testToArray(): void
+    {
+        $expected = [
+            'before_action' => '前置条件',
+            'after_action' => '后置条件',
+            'during_action' => '执行中条件',
+            'validation' => '验证条件',
+            'filter' => '过滤条件',
+        ];
+
+        $actual = [];
+        foreach (ConditionTrigger::cases() as $case) {
+            $actual[$case->value] = $case->getLabel();
+        }
+
+        $this->assertSame($expected, $actual);
     }
 }

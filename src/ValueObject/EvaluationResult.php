@@ -7,14 +7,21 @@ namespace Tourze\ConditionSystemBundle\ValueObject;
  */
 class EvaluationResult
 {
+    /**
+     * @param array<string> $messages
+     * @param array<string, mixed> $metadata
+     */
     private function __construct(
         private readonly bool $passed,
         private readonly array $messages = [],
-        private readonly array $metadata = []
-    ) {}
+        private readonly array $metadata = [],
+    ) {
+    }
 
     /**
      * 创建通过结果
+     *
+     * @param array<string, mixed> $metadata
      */
     public static function pass(array $metadata = []): self
     {
@@ -23,6 +30,9 @@ class EvaluationResult
 
     /**
      * 创建失败结果
+     *
+     * @param array<string> $messages
+     * @param array<string, mixed> $metadata
      */
     public static function fail(array $messages, array $metadata = []): self
     {
@@ -39,6 +49,8 @@ class EvaluationResult
 
     /**
      * 获取消息
+     *
+     * @return array<string>
      */
     public function getMessages(): array
     {
@@ -55,6 +67,8 @@ class EvaluationResult
 
     /**
      * 获取元数据
+     *
+     * @return array<string, mixed>
      */
     public function getMetadata(): array
     {
@@ -68,4 +82,4 @@ class EvaluationResult
     {
         return $this->metadata[$key] ?? $default;
     }
-} 
+}

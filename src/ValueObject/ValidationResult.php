@@ -7,10 +7,14 @@ namespace Tourze\ConditionSystemBundle\ValueObject;
  */
 class ValidationResult
 {
+    /**
+     * @param array<string> $errors
+     */
     private function __construct(
         private readonly bool $valid,
-        private readonly array $errors = []
-    ) {}
+        private readonly array $errors = [],
+    ) {
+    }
 
     /**
      * 创建成功结果
@@ -22,6 +26,8 @@ class ValidationResult
 
     /**
      * 创建失败结果
+     *
+     * @param array<string> $errors
      */
     public static function failure(array $errors): self
     {
@@ -38,6 +44,8 @@ class ValidationResult
 
     /**
      * 获取错误信息
+     *
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -51,4 +59,4 @@ class ValidationResult
     {
         return $this->errors[0] ?? null;
     }
-} 
+}

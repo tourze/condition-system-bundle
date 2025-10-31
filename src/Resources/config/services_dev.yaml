@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  # DataFixtures 只在开发环境中加载
+  Tourze\ConditionSystemBundle\DataFixtures\:
+    resource: '../../DataFixtures'
+    tags: ['doctrine.fixture.orm']

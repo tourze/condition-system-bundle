@@ -7,6 +7,10 @@ namespace Tourze\ConditionSystemBundle\ValueObject;
  */
 class FormField
 {
+    /**
+     * @param array<string, mixed> $options
+     * @param array<string, mixed> $constraints
+     */
     private function __construct(
         private readonly string $name,
         private readonly string $type,
@@ -14,8 +18,9 @@ class FormField
         private readonly bool $required = false,
         private readonly ?string $help = null,
         private readonly array $options = [],
-        private readonly array $constraints = []
-    ) {}
+        private readonly array $constraints = [],
+    ) {
+    }
 
     public static function create(string $name, string $type, string $label): self
     {
@@ -48,6 +53,9 @@ class FormField
         );
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function options(array $options): self
     {
         return new self(
@@ -61,6 +69,9 @@ class FormField
         );
     }
 
+    /**
+     * @param array<string, mixed> $constraints
+     */
     public function constraints(array $constraints): self
     {
         return new self(
@@ -84,6 +95,9 @@ class FormField
         return $this->constraints(['max' => $max]);
     }
 
+    /**
+     * @param array<string, mixed> $choices
+     */
     public function choices(array $choices): self
     {
         return $this->options(['choices' => $choices]);
@@ -114,16 +128,25 @@ class FormField
         return $this->help;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getConstraints(): array
     {
         return $this->constraints;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
@@ -136,4 +159,4 @@ class FormField
             'constraints' => $this->constraints,
         ];
     }
-} 
+}

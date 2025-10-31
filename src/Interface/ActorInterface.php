@@ -21,6 +21,8 @@ interface ActorInterface
 
     /**
      * 获取执行者数据
+     *
+     * @return array<string, mixed>
      */
     public function getActorData(): array;
-} 
+}

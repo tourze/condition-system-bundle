@@ -2,76 +2,94 @@
 
 namespace Tourze\ConditionSystemBundle\Tests\Exception;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Tourze\ConditionSystemBundle\Exception\ConditionSystemException;
+use Tourze\PHPUnitBase\AbstractExceptionTestCase;
 
-class ConditionSystemExceptionTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(ConditionSystemException::class)]
+final class ConditionSystemExceptionTest extends AbstractExceptionTestCase
 {
-    public function test_exception_extends_base_exception(): void
+    /**
+     * 创建一个具体的异常实现类用于测试
+     */
+    private function createExceptionInstance(?string $message = null, ?int $code = null, ?\Throwable $previous = null): ConditionSystemException
     {
-        $exception = new ConditionSystemException();
-        
+        return new class($message, $code, $previous) extends ConditionSystemException {
+            public function __construct(?string $message = null, ?int $code = null, ?\Throwable $previous = null)
+            {
+                parent::__construct($message ?? '测试异常', $code ?? 0, $previous);
+            }
+        };
+    }
+
+    public function testExceptionExtendsBaseException(): void
+    {
+        $exception = $this->createExceptionInstance();
+
         $this->assertInstanceOf(\Exception::class, $exception);
     }
 
-    public function test_exception_with_message(): void
+    public function testExceptionWithMessage(): void
     {
         $message = '条件系统发生错误';
-        $exception = new ConditionSystemException($message);
-        
+        $exception = $this->createExceptionInstance($message);
+
         $this->assertEquals($message, $exception->getMessage());
     }
 
-    public function test_exception_with_message_and_code(): void
+    public function testExceptionWithMessageAndCode(): void
     {
         $message = '条件系统错误';
         $code = 1001;
-        $exception = new ConditionSystemException($message, $code);
-        
+        $exception = $this->createExceptionInstance($message, $code);
+
         $this->assertEquals($message, $exception->getMessage());
         $this->assertEquals($code, $exception->getCode());
     }
 
-    public function test_exception_with_previous_exception(): void
+    public function testExceptionWithPreviousException(): void
     {
         $previousException = new \RuntimeException('原始错误');
-        $exception = new ConditionSystemException('条件系统错误', 0, $previousException);
-        
+        $exception = $this->createExceptionInstance('条件系统错误', 0, $previousException);
+
         $this->assertSame($previousException, $exception->getPrevious());
     }
 
-    public function test_exception_can_be_thrown_and_caught(): void
+    public function testExceptionCanBeThrownAndCaught(): void
     {
         $this->expectException(ConditionSystemException::class);
         $this->expectExceptionMessage('测试异常');
-        
-        throw new ConditionSystemException('测试异常');
+
+        throw $this->createExceptionInstance('测试异常');
     }
 
-    public function test_exception_inheritance_chain(): void
+    public function testExceptionInheritanceChain(): void
     {
-        $exception = new ConditionSystemException();
-        
+        $exception = $this->createExceptionInstance();
+
         $this->assertInstanceOf(\Throwable::class, $exception);
         $this->assertInstanceOf(\Exception::class, $exception);
         $this->assertInstanceOf(ConditionSystemException::class, $exception);
     }
 
-    public function test_exception_default_values(): void
+    public function testExceptionDefaultValues(): void
     {
-        $exception = new ConditionSystemException();
-        
-        $this->assertEquals('', $exception->getMessage());
+        $exception = $this->createExceptionInstance();
+
+        $this->assertEquals('测试异常', $exception->getMessage());
         $this->assertEquals(0, $exception->getCode());
         $this->assertNull($exception->getPrevious());
     }
 
-    public function test_exception_stack_trace(): void
+    public function testExceptionStackTrace(): void
     {
-        $exception = new ConditionSystemException('测试');
-        
+        $exception = $this->createExceptionInstance('测试');
+
         $this->assertNotEmpty($exception->getTrace());
         $this->assertNotEmpty($exception->getTraceAsString());
         $this->assertStringContainsString(__CLASS__, $exception->getTraceAsString());
     }
-} 
+}

@@ -7,4 +7,4 @@ namespace Tourze\ConditionSystemBundle\Exception;
  */
 class InvalidConditionConfigException extends ConditionSystemException
 {
-} 
+}

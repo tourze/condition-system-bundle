@@ -20,7 +20,8 @@ class FormFieldFactory
     public static function decimal(string $name, string $label, int $scale = 2): FormField
     {
         return FormField::create($name, 'decimal', $label)
-            ->options(['scale' => $scale]);
+            ->options(['scale' => $scale])
+        ;
     }
 
     public static function boolean(string $name, string $label): FormField
@@ -28,10 +29,14 @@ class FormFieldFactory
         return FormField::create($name, 'boolean', $label);
     }
 
+    /**
+     * @param array<string, mixed> $choices
+     */
     public static function choice(string $name, string $label, array $choices = []): FormField
     {
         return FormField::create($name, 'choice', $label)
-            ->choices($choices);
+            ->choices($choices)
+        ;
     }
 
     public static function array(string $name, string $label): FormField
@@ -63,4 +68,4 @@ class FormFieldFactory
     {
         return FormField::create($name, 'url', $label);
     }
-} 
+}

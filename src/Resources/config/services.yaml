@@ -1,3 +1,6 @@
+parameters:
+  condition_system.handler_tag: 'condition_system.handler'
+
 services:
   # default configuration for services in *this* file
   _defaults:
@@ -8,3 +11,8 @@ services:
     resource: '../../Interface/'
   Tourze\ConditionSystemBundle\Service\:
     resource: '../../Service/'
+  Tourze\ConditionSystemBundle\Repository\:
+    resource: '../../Repository/'
+  Tourze\ConditionSystemBundle\Controller\:
+    resource: '../../Controller/'
+    tags: ['controller.service_arguments']

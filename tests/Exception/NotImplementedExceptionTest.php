@@ -1,41 +1,45 @@
 <?php
 
-namespace Tourze\ConditionSystemBundle\Tests\Unit\Exception;
+namespace Tourze\ConditionSystemBundle\Tests\Exception;
 
-use PHPUnit\Framework\TestCase;
-use RuntimeException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Tourze\ConditionSystemBundle\Exception\NotImplementedException;
+use Tourze\PHPUnitBase\AbstractExceptionTestCase;
 
-class NotImplementedExceptionTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(NotImplementedException::class)]
+final class NotImplementedExceptionTest extends AbstractExceptionTestCase
 {
-    public function test_exception_extends_runtime_exception(): void
+    public function testExceptionExtendsRuntimeException(): void
     {
         $exception = new NotImplementedException('Test message');
-        
-        $this->assertInstanceOf(RuntimeException::class, $exception);
+
+        $this->assertInstanceOf(\RuntimeException::class, $exception);
     }
-    
-    public function test_exception_message(): void
+
+    public function testExceptionMessage(): void
     {
         $message = 'Feature not implemented';
         $exception = new NotImplementedException($message);
-        
+
         $this->assertEquals($message, $exception->getMessage());
     }
-    
-    public function test_exception_code(): void
+
+    public function testExceptionCode(): void
     {
         $code = 501;
         $exception = new NotImplementedException('Test', $code);
-        
+
         $this->assertEquals($code, $exception->getCode());
     }
-    
-    public function test_exception_previous(): void
+
+    public function testExceptionPrevious(): void
     {
         $previous = new \Exception('Previous exception');
         $exception = new NotImplementedException('Test', 0, $previous);
-        
+
         $this->assertSame($previous, $exception->getPrevious());
     }
 }

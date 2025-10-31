@@ -2,22 +2,12 @@
 
 namespace Tourze\ConditionSystemBundle\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Tourze\SymfonyDependencyServiceLoader\AutoExtension;
 
-class ConditionSystemExtension extends Extension
+class ConditionSystemExtension extends AutoExtension
 {
-    public function load(array $configs, ContainerBuilder $container): void
+    protected function getConfigDir(): string
     {
-        $loader = new YamlFileLoader(
-            $container,
-            new FileLocator(__DIR__ . '/../Resources/config')
-        );
-        $loader->load('services.yaml');
-        
-        // 设置参数
-        $container->setParameter('condition_system.handler_tag', 'condition_system.handler');
+        return __DIR__ . '/../Resources/config';
     }
 }

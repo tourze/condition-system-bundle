@@ -2,18 +2,26 @@
 
 namespace Tourze\ConditionSystemBundle\Service;
 
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Tourze\ConditionSystemBundle\Exception\ConditionHandlerNotFoundException;
 use Tourze\ConditionSystemBundle\Interface\ConditionHandlerInterface;
 
 /**
  * 条件处理器工厂
  */
+#[Autoconfigure(public: true)]
 class ConditionHandlerFactory
 {
+    /**
+     * @var array<string, ConditionHandlerInterface>
+     */
     private array $handlers = [];
 
-    public function __construct(#[TaggedIterator(tag: 'condition_system.handler')] iterable $handlers)
+    /**
+     * @param iterable<ConditionHandlerInterface> $handlers
+     */
+    public function __construct(#[AutowireIterator(tag: 'condition_system.handler')] iterable $handlers)
     {
         foreach ($handlers as $handler) {
             if ($handler instanceof ConditionHandlerInterface) {
@@ -44,6 +52,8 @@ class ConditionHandlerFactory
 
     /**
      * 获取所有处理器
+     *
+     * @return array<string, ConditionHandlerInterface>
      */
     public function getAllHandlers(): array
     {
@@ -52,6 +62,8 @@ class ConditionHandlerFactory
 
     /**
      * 获取可用的条件类型
+     *
+     * @return array<string, array<string, mixed>>
      */
     public function getAvailableTypes(): array
     {

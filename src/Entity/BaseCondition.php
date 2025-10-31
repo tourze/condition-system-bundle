@@ -4,6 +4,7 @@ namespace Tourze\ConditionSystemBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Tourze\ConditionSystemBundle\Enum\ConditionTrigger;
 use Tourze\ConditionSystemBundle\Interface\ConditionInterface;
 use Tourze\ConditionSystemBundle\Interface\SubjectInterface;
@@ -20,21 +21,28 @@ use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
 abstract class BaseCondition implements ConditionInterface, \Stringable
 {
     use TimestampableAware;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(options: ['comment' => '主键ID'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 50, options: ['comment' => '条件类型'])]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
     private string $type;
 
     #[ORM\Column(type: Types::STRING, length: 100, options: ['comment' => '条件标签'])]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private string $label;
 
     #[ORM\Column(type: Types::TEXT, nullable: true, options: ['comment' => '备注'])]
+    #[Assert\Length(max: 65535)]
     private ?string $remark = null;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true, 'comment' => '是否启用'])]
+    #[Assert\NotNull]
     private bool $enabled = true;
 
     /**
@@ -44,6 +52,8 @@ abstract class BaseCondition implements ConditionInterface, \Stringable
 
     /**
      * 转换为数组 - 由子类实现
+     *
+     * @return array<string, mixed>
      */
     abstract public function toArray(): array;
 
@@ -62,10 +72,9 @@ abstract class BaseCondition implements ConditionInterface, \Stringable
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(string $type): void
     {
         $this->type = $type;
-        return $this;
     }
 
     public function getLabel(): string
@@ -73,10 +82,9 @@ abstract class BaseCondition implements ConditionInterface, \Stringable
         return $this->label;
     }
 
-    public function setLabel(string $label): self
+    public function setLabel(string $label): void
     {
         $this->label = $label;
-        return $this;
     }
 
     public function getRemark(): ?string
@@ -84,10 +92,9 @@ abstract class BaseCondition implements ConditionInterface, \Stringable
         return $this->remark;
     }
 
-    public function setRemark(?string $remark): self
+    public function setRemark(?string $remark): void
     {
         $this->remark = $remark;
-        return $this;
     }
 
     public function isEnabled(): bool
@@ -95,10 +102,9 @@ abstract class BaseCondition implements ConditionInterface, \Stringable
         return $this->enabled;
     }
 
-    public function setEnabled(bool $enabled): self
+    public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
-        return $this;
     }
 
     public function __toString(): string

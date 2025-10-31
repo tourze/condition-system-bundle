@@ -41,6 +41,8 @@ interface ConditionInterface
 
     /**
      * 转换为数组
+     *
+     * @return array<string, mixed>
      */
     public function toArray(): array;
-} 
+}

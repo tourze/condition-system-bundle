@@ -9,11 +9,15 @@ use Tourze\ConditionSystemBundle\Interface\ActorInterface;
  */
 class EvaluationContext
 {
+    /**
+     * @param array<string, mixed> $metadata
+     */
     private function __construct(
         private readonly ActorInterface $actor,
         private readonly ?object $payload = null,
-        private readonly array $metadata = []
-    ) {}
+        private readonly array $metadata = [],
+    ) {
+    }
 
     /**
      * 创建评估上下文
@@ -33,6 +37,8 @@ class EvaluationContext
 
     /**
      * 添加元数据
+     *
+     * @param array<string, mixed> $metadata
      */
     public function withMetadata(array $metadata): self
     {
@@ -57,6 +63,8 @@ class EvaluationContext
 
     /**
      * 获取元数据
+     *
+     * @return array<string, mixed>
      */
     public function getMetadata(): array
     {
@@ -70,4 +78,4 @@ class EvaluationContext
     {
         return $this->metadata[$key] ?? $default;
     }
-} 
+}
