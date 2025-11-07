@@ -25,10 +25,11 @@ class BaseConditionRepository extends ServiceEntityRepository
     /**
      * 根据类型查找条件
      *
-     * @return BaseCondition[]
+     * @return array<BaseCondition>
      */
     public function findByType(string $type): array
     {
+        /** @var array<BaseCondition> */
         return $this->createQueryBuilder('c')
             ->andWhere('c.type = :type')
             ->setParameter('type', $type)
@@ -40,10 +41,11 @@ class BaseConditionRepository extends ServiceEntityRepository
     /**
      * 查找启用的条件
      *
-     * @return BaseCondition[]
+     * @return array<BaseCondition>
      */
     public function findEnabled(): array
     {
+        /** @var array<BaseCondition> */
         return $this->createQueryBuilder('c')
             ->andWhere('c.enabled = :enabled')
             ->setParameter('enabled', true)
@@ -55,10 +57,11 @@ class BaseConditionRepository extends ServiceEntityRepository
     /**
      * 根据类型查找启用的条件
      *
-     * @return BaseCondition[]
+     * @return array<BaseCondition>
      */
     public function findEnabledByType(string $type): array
     {
+        /** @var array<BaseCondition> */
         return $this->createQueryBuilder('c')
             ->andWhere('c.type = :type')
             ->andWhere('c.enabled = :enabled')

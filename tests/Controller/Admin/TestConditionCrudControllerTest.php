@@ -101,7 +101,10 @@ final class TestConditionCrudControllerTest extends AbstractEasyAdminControllerT
     {
         $client = self::createClientWithDatabase();
         self::getClient($client);
-        $this->loginAsAdmin($client);
+
+        // 使用与 provider 一致的密码，避免 ContextListener 判定用户变更
+        $user = new InMemoryUser('admin', 'password', ['ROLE_ADMIN']);
+        $client->loginUser($user, 'main');
 
         $crawler = $client->request('GET', $this->generateAdminUrl('new'));
 
@@ -138,7 +141,10 @@ final class TestConditionCrudControllerTest extends AbstractEasyAdminControllerT
     {
         $client = self::createClientWithDatabase();
         self::getClient($client);
-        $this->loginAsAdmin($client);
+
+        // 使用与 provider 一致的密码，避免 ContextListener 判定用户变更
+        $user = new InMemoryUser('admin', 'password', ['ROLE_ADMIN']);
+        $client->loginUser($user, 'main');
 
         // 创建测试数据
         $testCondition = new TestCondition();
@@ -186,7 +192,10 @@ final class TestConditionCrudControllerTest extends AbstractEasyAdminControllerT
     {
         $client = self::createClientWithDatabase();
         self::getClient($client);
-        $this->loginAsAdmin($client);
+
+        // 使用与 provider 一致的密码，避免 ContextListener 判定用户变更
+        $user = new InMemoryUser('admin', 'password', ['ROLE_ADMIN']);
+        $client->loginUser($user, 'main');
 
         // 创建测试数据
         $testCondition1 = new TestCondition();
@@ -214,7 +223,10 @@ final class TestConditionCrudControllerTest extends AbstractEasyAdminControllerT
     {
         $client = self::createClientWithDatabase();
         self::getClient($client);
-        $this->loginAsAdmin($client);
+
+        // 使用与 provider 一致的密码，避免 ContextListener 判定用户变更
+        $user = new InMemoryUser('admin', 'password', ['ROLE_ADMIN']);
+        $client->loginUser($user, 'main');
 
         // 创建测试数据
         $testCondition = new TestCondition();
@@ -239,7 +251,10 @@ final class TestConditionCrudControllerTest extends AbstractEasyAdminControllerT
     {
         $client = self::createClientWithDatabase();
         self::getClient($client);
-        $this->loginAsAdmin($client);
+
+        // 使用与 provider 一致的密码，避免 ContextListener 判定用户变更
+        $user = new InMemoryUser('admin', 'password', ['ROLE_ADMIN']);
+        $client->loginUser($user, 'main');
 
         $crawler = $client->request('GET', $this->generateAdminUrl('new'));
         $this->assertResponseIsSuccessful();
@@ -288,7 +303,10 @@ final class TestConditionCrudControllerTest extends AbstractEasyAdminControllerT
     {
         $client = self::createClientWithDatabase();
         self::getClient($client);
-        $this->loginAsAdmin($client);
+
+        // 使用与 provider 一致的密码，避免 ContextListener 判定用户变更
+        $user = new InMemoryUser('admin', 'password', ['ROLE_ADMIN']);
+        $client->loginUser($user, 'main');
 
         // 访问新建页面，验证表单字段存在
         $crawler = $client->request('GET', $this->generateAdminUrl('new'));
