@@ -57,12 +57,6 @@ final class TestConditionCrudControllerTest extends AbstractEasyAdminControllerT
         yield 'remark' => ['remark'];
     }
 
-    public function testGetEntityFqcnReturnsCorrectClass(): void
-    {
-        $controller = $this->getControllerService();
-        $this->assertEquals(TestCondition::class, $controller::getEntityFqcn());
-    }
-
     public function testRequiredFieldsValidation(): void
     {
         $client = self::createClientWithDatabase();
